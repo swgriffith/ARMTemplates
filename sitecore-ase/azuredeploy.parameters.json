@@ -12,10 +12,16 @@
       "value": "Sample"
     },
     "ASE-Name": {
-      "value": ""
+      "value": "GriffSiteCore"
     },
     "ASE-Plan-Name":{
-      "value": ""
+      "value": "MyPlan"
+    },
+    "ASE-Plan-Size":{
+      "value": "P1"
+    },
+    "ASE-Plan-WorkerCount": {
+      "value": "2"
     }
   }
 }
