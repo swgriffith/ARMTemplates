@@ -62,7 +62,7 @@
       },
       "properties": {
         "name": "[parameters('AppName')]",
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('ASE-Plan-Name'))]",
+        "serverFarmId": "[parameters('ASE-Plan-Name')]",
         "hostingEnvironment": "[parameters('ASE-Name')]",
         "hostingEnvironmentId": "[resourceId('Microsoft.Web/hostingEnvironments', parameters('ASE-Name'))]"
       }
