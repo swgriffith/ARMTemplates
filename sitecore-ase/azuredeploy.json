@@ -46,44 +46,11 @@
       "metadata": {
         "description": "Name of the target App Service Plan"
       }
-     },
-     "ASE-Plan-Size": {
-      "type": "string",
-      "metadata": {
-        "description": "Size of the target App Service Plan"
-      }
-     },
-     "ASE-Plan-WorkerCount": {
-      "type": "string",
-      "metadata": {
-        "description": "Number of workers in the target App Service Plan"
-      }
      }
   },
   "variables": {
     },
   "resources": [
-        {
-      "name": "[parameters('ASE-Plan-Name')]",
-      "type": "Microsoft.Web/serverfarms",
-      "location": "[parameters('Location')]",
-      "apiVersion": "2014-06-01",
-      "tags": {
-        "displayName": "ASE-APP-SERVICE-APP"
-      },
-      "properties": {
-        "name": "[parameters('ASE-Plan-Name')]",
-        "hostingEnvironment": "[parameters('ASE-Name')]",
-        "hostingEnvironmentId": "[resourceId('Microsoft.Web/hostingEnvironments', parameters('ASE-Name'))]"
-      },
-      "sku": {
-        "name": "[parameters('ASE-Plan-Size')]",
-        "tier": "Premium",
-        "size": "[parameters('ASE-Plan-Size')]",
-        "family": "P",
-        "capacity": "[parameters('ASE-Plan-WorkerCount')]"
-      }
-    },
     {
       "name": "[parameters('AppName')]",
       "type": "Microsoft.Web/sites",
@@ -92,8 +59,6 @@
       "dependsOn": [
       ],
       "tags": {
-        "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', parameters('ASE-Plan-Name')))]": "Resource",
-        "displayName": "[parameters('AppName')]"
       },
       "properties": {
         "name": "[parameters('AppName')]",

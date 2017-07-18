@@ -15,13 +15,7 @@
       "value": "GriffSiteCore"
     },
     "ASE-Plan-Name":{
-      "value": "MyPlan"
-    },
-    "ASE-Plan-Size":{
-      "value": "P1"
-    },
-    "ASE-Plan-WorkerCount": {
-      "value": "2"
+      "value": "SiteCorePlan"
     }
   }
 }
