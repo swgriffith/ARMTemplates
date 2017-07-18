@@ -14,7 +14,7 @@
     "ASE-Name": {
       "value": "GriffSiteCore"
     },
-    "ASE-Plan-Name":{
+    "ASE-Plan-ResourceID":{
       "value": "SiteCorePlan"
     }
   }

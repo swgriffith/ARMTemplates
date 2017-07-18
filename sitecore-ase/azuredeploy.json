@@ -41,10 +41,10 @@
         "description": "Name of the target ASE"
       }
     },
-     "ASE-Plan-Name": {
+     "ASE-Plan-ResourceID": {
       "type": "string",
       "metadata": {
-        "description": "Name of the target App Service Plan"
+        "description": "Resource ID of the target App Service Plan"
       }
      }
   },
@@ -62,7 +62,7 @@
       },
       "properties": {
         "name": "[parameters('AppName')]",
-        "serverFarmId": "[parameters('ASE-Plan-Name')]",
+        "serverFarmId": "[parameters('ASE-Plan-ResourceID')]",
         "hostingEnvironment": "[parameters('ASE-Name')]",
         "hostingEnvironmentId": "[resourceId('Microsoft.Web/hostingEnvironments', parameters('ASE-Name'))]"
       }
