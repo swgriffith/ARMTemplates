@@ -3,22 +3,22 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "deploymentId": {
-      "value": ""
+      "value": "MyDeployment"
     },
     "sqlServerLogin": {
-      "value": ""
+      "value": "griffith"
     },
     "sqlServerPassword": {
-      "value": ""
+      "value": "FOjz75xaj1R@&UaEOJja"
     },
     "cmMsDeployPackageUrl": {
-      "value": ""
+      "value": "https://aammediastorage.blob.core.windows.net/media-input/Sitecore%208.2%20rev.%20170407_cm.scwdp.zip"
     },
     "cdMsDeployPackageUrl": {
-      "value": ""
+      "value": "https://aammediastorage.blob.core.windows.net/media-input/Sitecore%208.2%20rev.%20170407_cd.scwdp.zip"
     },
     "sitecoreAdminPassword": {
-      "value": ""
+      "value": "FOjz75xaj1R@&UaEOJja"
     },
     "licenseXml": {
       "value": ""
