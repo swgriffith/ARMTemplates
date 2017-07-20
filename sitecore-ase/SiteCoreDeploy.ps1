@@ -72,7 +72,7 @@ try {
 	}
 	
 	Write-Verbose "Starting ARM deployment...";
-	New-AzureRmResourceGroupDeployment -Name $Name -ResourceGroupName $Name -TemplateUri $ArmTemplateUrl -TemplateParameterObject $additionalParams; # -DeploymentDebugLogLevel All -Debug;
+	New-AzureRmResourceGroupDeployment -Name $Name -ResourceGroupName $Name -TemplateUri $ArmTemplateUrl -TemplateParameterFile $ArmParametersPath; # -DeploymentDebugLogLevel All -Debug;
 
 	Write-Host "Deployment Complete.";
 }

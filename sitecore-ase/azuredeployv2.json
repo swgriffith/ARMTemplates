@@ -1,0 +1,195 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+  "parameters": {
+    "Location": {
+      "type": "string",
+      "allowedValues": [
+        "Central US",
+        "East US",
+        "East US 2",
+        "North Central US",
+        "South Central US",
+        "West US",
+        "Canada Central",
+        "North Europe",
+        "West Europe",
+        "East Asia",
+        "Southeast Asia",
+        "Japan East",
+        "Japan West",
+        "Brazil South",
+        "Australia East",
+        "Australia Southeast",
+        "West India",
+        "Central India",
+        "South India"
+      ],
+      "metadata": {
+        "description": "Location of the App Service Environment"
+      }
+    },
+    "AppName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Web App"
+      }
+    },
+    "ASE-Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the target ASE"
+      }
+    },
+     "ASE-Plan-ResourceID": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource ID of the target App Service Plan"
+      }
+     },
+     "sitecoreAdminPassword":{
+         "type": "string",
+         "metadata": {
+             "description":"Admin Password for Site Core"
+         }
+     },
+     "sqlServerFqdn":{
+         "type": "string",
+         "metadata": {
+             "description":"SQL Server Fully QUalified Name"
+         }
+     },
+     "sqlServerLogin":{
+         "type": "string",
+         "metadata": {
+             "description":"SQL Server User Name"
+         }
+     },
+    "sqlServerPassword":{
+         "type": "string",
+         "metadata": {
+             "description":"SQL Server Password"
+         }
+     },
+     "sitecoreDBUserName":{
+         "type": "string",
+         "metadata": {
+             "description":"DB User Name"
+         }
+     }, 
+     "sitecoreDBPassword":{
+         "type": "string",
+         "metadata": {
+             "description":"DB User Name"
+         }
+     }, 
+     "searchServiceName":{
+         "type": "string",
+         "metadata": {
+             "description":"Azure Search Instance Name"
+         }
+     }, 
+     "redisCacheName":{
+         "type": "string",
+         "metadata": {
+             "description":"Redis Cache Instance Name"
+         }
+     },
+     "securityClientIp": {
+      "type": "string",
+      "defaultValue": "0.0.0.0"
+    },
+    "securityClientIpMask": {
+      "type": "string",
+      "defaultValue": "0.0.0.0"
+    },
+     "licenseXml":{
+         "type": "string",
+         "metadata": {
+             "description":"License XML"
+         }
+     }     
+  },
+  "variables": {
+      "cmWebAppName":"[concat(parameters('AppName'), '-cm')]",
+      "cdWebAppName":"[concat(parameters('AppName'), '-cd')]",
+      "cmCoreSqlDatabaseUserName":"[parameters('sitecoreDBUserName')]",
+      "cmCoreSqlDatabasePassword":"[parameters('sitecoreDBPassword')]",
+      "cmMasterSqlDatabaseUserName":"[parameters('sitecoreDBUserName')]",
+      "cmMasterSqlDatabasePassword":"[parameters('sitecoreDBPassword')]",
+      "webSqlServerLogin":"[parameters('sqlServerLogin')]",
+      "webSqlServerPassword":"[parameters('sqlServerPassword')]",
+      "cmWebSqlDatabaseUserName":"[parameters('sitecoreDBUserName')]",
+      "cmWebSqlDatabasePassword":"[parameters('sitecoreDBPassword')]",
+      "cmWebAppNameTidy": "[toLower(trim(variables('cmWebAppName')))]",
+      "cdWebAppNameTidy": "[toLower(trim(variables('cdWebAppName')))]",
+      "coreDbNameTidy": "coredb",
+      "webDbNameTidy": "webdb",
+      "masterDbNameTidy": "masterdb",
+      "sqlServerFqdnTidy": "[trim(toLower(parameters('sqlServerFqdn')))]",
+      "webSqlServerFqdnTidy": "[trim(toLower(parameters('sqlServerFqdn')))]",
+      "searchServiceNameTidy": "[toLower(trim(parameters('searchServiceName')))]",
+      "redisCacheNameTidy": "[toLower(trim(parameters('redisCacheName')))]"
+
+    },
+  "resources": [
+        {
+      "type": "Microsoft.Web/sites",
+      "name": "[variables('cmWebAppName')]",
+      "apiVersion": "2015-08-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "name": "[parameters('AppName')]",
+        "serverFarmId": "[parameters('ASE-Plan-ResourceID')]",
+        "hostingEnvironment": "[parameters('ASE-Name')]",
+        "hostingEnvironmentId": "[resourceId('Microsoft.Web/hostingEnvironments', parameters('ASE-Name'))]",
+        "siteConfig": {
+          "use32BitWorkerProcess": false,
+          "alwaysOn": true,
+          "phpVersion": "",
+          "defaultDocuments": [
+            "index.html"
+          ]
+        }
+      },
+      "dependsOn": [
+      ],
+      "tags": {
+      }
+    },
+    {
+      "name": "[concat(variables('cmWebAppName'), '/', 'MSDeploy')]",
+      "type": "Microsoft.Web/sites/extensions",
+      "location": "[parameters('location')]",
+      "apiVersion": "2016-08-01",
+      "properties": {
+        "packageUri": "https://aammediastorage.blob.core.windows.net/media-input/Sitecore%208.2%20rev.%20170407_cm.scwdp.zip",
+        "dbType": "SQL",
+        "connectionString": "[concat('Data Source=tcp:', variables('sqlServerFqdnTidy'), ',1433;Initial Catalog=master;User Id=', parameters('sqlServerLogin'), ';Password=', parameters('sqlServerPassword'), ';')]",
+        "setParameters": {
+          "Application Path": "[variables('cmWebAppNameTidy')]",
+          "Sitecore Admin New Password": "[parameters('sitecoreAdminPassword')]",
+          "Core DB User Name": "[variables('cmCoreSqlDatabaseUserName')]",
+          "Core DB Password": "[variables('cmCoreSqlDatabasePassword')]",
+          "Core Admin Connection String": "[concat('Encrypt=True;TrustServerCertificate=False;Data Source=', variables('sqlServerFqdnTidy'), ',1433;Initial Catalog=',variables('coreDbNameTidy'),';User Id=', parameters('sqlServerLogin'), ';Password=', parameters('sqlServerPassword'), ';')]",
+          "Core Connection String": "[concat('Encrypt=True;TrustServerCertificate=False;Data Source=', variables('sqlServerFqdnTidy'), ',1433;Initial Catalog=',variables('coreDbNameTidy'),';User Id=', variables('cmCoreSqlDatabaseUserName'), ';Password=', variables('cmCoreSqlDatabasePassword'), ';')]",
+          "Master DB User Name": "[variables('cmMasterSqlDatabaseUserName')]",
+          "Master DB Password": "[variables('cmMasterSqlDatabasePassword')]",
+          "Master Admin Connection String": "[concat('Encrypt=True;TrustServerCertificate=False;Data Source=', variables('sqlServerFqdnTidy'), ',1433;Initial Catalog=',variables('masterDbNameTidy'),';User Id=', parameters('sqlServerLogin'), ';Password=', parameters('sqlServerPassword'), ';')]",
+          "Master Connection String": "[concat('Encrypt=True;TrustServerCertificate=False;Data Source=', variables('sqlServerFqdnTidy'), ',1433;Initial Catalog=',variables('masterDbNameTidy'),';User Id=', variables('cmMasterSqlDatabaseUserName'), ';Password=', variables('cmMasterSqlDatabasePassword'), ';')]",
+          "Web DB User Name": "[variables('cmWebSqlDatabaseUserName')]",
+          "Web DB Password": "[variables('cmWebSqlDatabasePassword')]",
+          "Web Admin Connection String": "[concat('Encrypt=True;TrustServerCertificate=False;Data Source=', variables('webSqlServerFqdnTidy'), ',1433;Initial Catalog=',variables('webDbNameTidy'),';User Id=', variables('webSqlServerLogin'), ';Password=', variables('webSqlServerPassword'), ';')]",
+          "Web Connection String": "[concat('Encrypt=True;TrustServerCertificate=False;Data Source=', variables('webSqlServerFqdnTidy'), ',1433;Initial Catalog=',variables('webDbNameTidy'),';User Id=', variables('cmWebSqlDatabaseUserName'), ';Password=', variables('cmWebSqlDatabasePassword'), ';')]",
+          "Cloud Search Connection String": "ToDo",
+          "Social Link Domain": "ToDo",
+          "IP Security Client IP": "[parameters('securityClientIp')]",
+          "IP Security Client IP Mask": "[parameters('securityClientIpMask')]",
+          "License Xml": "[parameters('licenseXml')]"
+        }
+      }
+    }
+  ],
+    "outputs": {
+    }
+}
