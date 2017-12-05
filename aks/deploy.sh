@@ -1,6 +1,5 @@
 #!/bin/bash
 # Arguments
-# -s Subscription Name
 # -r Resource group name
 # -l Location Name
 while getopts r:l: option
