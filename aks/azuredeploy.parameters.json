@@ -1,0 +1,39 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "aksInstanceName": {
+            "value": ""
+        },
+        "dnsPrefix": {
+            "value": ""
+        },
+        "kubernetesVersion": {
+            "value": "1.7.7"
+        },
+        "linuxAdminUsername": {
+            "value": "azureuser"
+        },
+        "sshRSAPublicKey": {
+            "value": ""
+        },
+        "servicePrincipalClientId": {
+            "value": ""
+        },
+        "servicePrincipalClientSecret": {
+            "value": ""
+        },
+        "agentCount": {
+            "value": 3
+        },
+        "agentVMSize": {
+            "value": "Standard_D2_v2"
+        },
+        "osDiskSizeGB": {
+            "value": 0
+        },
+        "osType": {
+            "value": "Linux"
+        }
+    }
+}
