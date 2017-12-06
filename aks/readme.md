@@ -8,9 +8,9 @@ Before running deploy.sh make sure you've added your secrets for the service pri
 
 deploy.sh takes the following three parameters:
 
--r Resource Group Name
-
--l Location of the Resource Group, which will also be used as the location of the AKS cluster
-
--f path to the ARM template parameters file
+|Flag     |Description |
+|-|-|
+| -r|Resource Group Name|
+| -l|Location of the Resource Group, which will also be used as the location of the AKS cluster|
+| -f|Path to the ARM template parameters file
 
