@@ -2,12 +2,13 @@
 # Arguments
 # -r Resource group name
 # -l Location Name
-while getopts r:l: option
+while getopts r:l:f: option
 do
 	case "${option}"
 	in
 		r) RESOURCEGROUP=${OPTARG};;
 		l) LOCATION=${OPTARG};;
+                f) PARAMFILE=${OPTARG};;
 	esac
 done
 
@@ -21,7 +22,8 @@ trim() {
 
 echo "Input parameters"
 echo "   location ${LOCATION}"
-echo "   resource group ${RESOURCEGROUP}" ; echo
+echo "   resource group ${RESOURCEGROUP}" 
+echo "   parameter file ${PARAMFILE}"; echo
 
 #--------------------------------------------
 # Creating Resource Group
@@ -40,4 +42,4 @@ az group deployment create \
     --name $RESOURCEGROUP \
     --resource-group $RESOURCEGROUP \
     --template-file azuredeploy.json \
-    --parameters @azuredeploy.parameters.json
+    --parameters @$PARAMFILE
